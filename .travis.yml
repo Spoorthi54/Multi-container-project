@@ -1,0 +1,15 @@
+sudo: required
+services:
+  - docker
+
+before_install:
+ - docker build -t spoorthi54/docker-react-test -f ./client/Dockerfile.dev ./client
+
+script:
+  - docker run -e CI=true docker-react-test npm test
+
+after_success: 
+  - docker build -t spoorthi54/multicont-proj-client  ./client
+  - docker build -t spoorthi54/multicont-proj-nginx  ./nginx
+  - docker build -t spoorthi54/multicont-proj-server  ./server
+  - docker build -t spoorthi54/multicont-proj-worker  ./worker
